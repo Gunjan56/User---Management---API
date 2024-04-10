@@ -14,3 +14,5 @@ class Config:
     MAIL_USE_SSL = False
     MAIL_USERNAME =  os.getenv('MAIL_USERNAME')
     MAIL_PASSWORD =  os.getenv('MAIL_PASSWORD')
+    TEMP_PATH = os.getenv('TEMP_PATH')
+    CHANGE_PASS = os.getenv('CHANGE_PASS')
