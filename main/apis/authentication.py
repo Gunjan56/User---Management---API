@@ -57,16 +57,15 @@ def login():
 def forgot_password():
     data = request.get_json()
     email = data['email']
-    remember_me = data.get('remember_me')
     user = User.query.filter_by(email=email).first()
-    remember_me = User.query.filter_by(remember_me=remember_me).first()
+    is_password_changed = User.query.filter_by(is_password_changed=is_password_changed).first()
     
     if user:
         reset_token = base64.b64encode(email.encode('utf-8')).decode('utf-8')
         link = current_app.config['CHANGE_PASS']
         reset_link = f'{link}{reset_token}'
         send_reset_password_email(email, reset_link)
-        user.remember_me = 0
+        user.is_password_changed = 0
         db.session.commit()
         return success_response(201, 'success', 'Reset password link sent to your email')
     
@@ -77,7 +76,6 @@ def forgot_password():
 @auth_bp.route('/reset_password/<token>', methods=['POST'])
 def reset_password(token):
     data = request.get_json()
-    remember_me = data.get('remember_me')
     new_password = data['new_password']
     confirm_password = data['confirm_password']
 
@@ -85,13 +83,13 @@ def reset_password(token):
         return error_response(400, 'New password and confirm password do not match')
 
     email = base64.b64decode(token).decode('utf-8')
-    remember_me = User.query.filter_by(remember_me=remember_me).first()
+    is_password_changed = User.query.filter_by(is_password_changed=is_password_changed).first()
     user = User.query.filter_by(email=email).first()
-    if user.remember_me == 1:
+    if user.is_password_changed == 1:
         return error_response(400, "link expired or used")
     if user:
         user.password = generate_password_hash(new_password)
-        user.remember_me = 1
+        user.is_password_changed = 1
         db.session.commit()
         return success_response(200, 'success','Password reset successfully')
     else:

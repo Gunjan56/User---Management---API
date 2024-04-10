@@ -33,7 +33,7 @@ def create_post():
 
     return success_response(201, 'success','Post created successfully')
 
-@post_bp.route('/manage_posts/<int:post_id>', methods=['GET', 'PUT', 'DELETE'])
+@post_bp.route('/manage_posts/<int:post_id>', methods=['GET', 'PUT'])
 @jwt_required()
 def manage_post(post_id):
     current_user_id = get_jwt_identity()
