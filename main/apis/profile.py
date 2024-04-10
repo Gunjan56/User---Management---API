@@ -74,7 +74,8 @@ def update_profile_picture():
     if profile_picture and allowed_file(profile_picture.filename, allowed_extensions):
         filename = secure_filename(profile_picture.filename)
         profile_picture.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        user.profile_picture = filename
+        temp_path = current_app.config['TEMP_PATH'] + str(filename)
+        user.profile_picture = temp_path
         db.session.commit()
 
         return success_response(200, 'success', 'Profile picture updated successfully')

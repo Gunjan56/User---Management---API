@@ -44,7 +44,7 @@ def unfollow(user_id):
     ).first()
 
     if not follow:
-        error_response(404, 'You are not following this user')
+        return error_response(404, 'You are not following this user')
 
     db.session.delete(follow)
     db.session.commit()

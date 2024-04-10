@@ -33,7 +33,7 @@ def create_post():
 
     return success_response(201, 'success','Post created successfully')
 
-@post_bp.route('/posts/<int:post_id>', methods=['GET', 'PUT', 'DELETE'])
+@post_bp.route('/manage_posts/<int:post_id>', methods=['GET', 'PUT', 'DELETE'])
 @jwt_required()
 def manage_post(post_id):
     current_user_id = get_jwt_identity()
@@ -70,7 +70,7 @@ def manage_post(post_id):
 
         return success_response(200, 'success','Post updated successfully')
 
-@post_bp.route('/posts/<int:post_id>', methods=['DELETE'])
+@post_bp.route('/delete_posts/<int:post_id>', methods=['DELETE'])
 @jwt_required()
 def delete_post(post_id):
     current_user_id = get_jwt_identity()
